@@ -4,24 +4,29 @@ import com.sun.istack.NotNull;
 import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
+import ua.gulimova.session.Session;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Data
-@Setter
-@Getter
 @Entity
 @Table(name = "Employee")
 public class Employee {
     @Id
     @GeneratedValue
+    @Column(name = "employee_id")
     private int id;
+
     @NotNull
     @Column(name = "employee_firstName")
     private String firstName;
+
     @NotNull
     @Column(name = "employee_lastName")
     private String lastName;
+
     @NotNull
     @Column(name = "employee_phoneNumber", unique = true)
     private String phoneNumber;

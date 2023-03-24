@@ -1,4 +1,53 @@
-package PACKAGE_NAME;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
+import ua.gulimova.session.Session;
+import ua.gulimova.session.SessionValidator;
 
-public class SessionValidatorTest {
+import java.time.LocalDate;
+import java.time.LocalTime;
+
+class SessionValidatorTest {
+
+    private SessionValidator sessionValidator = new SessionValidator();
+
+    @DisplayName("Test date validation")
+    @Test
+    void test_validate_invalidDateFormat() {
+        //Session date is before current date
+        Session session1 = new Session(LocalDate.now().minusDays(1),
+                LocalTime.now().plusHours(1),
+                LocalTime.now().plusHours(2));
+
+        //Session date is correct
+        Session session2 = new Session(LocalDate.now(),
+                LocalTime.now().plusHours(2),
+                LocalTime.now().plusHours(3));
+
+        Assertions.assertEquals("Session date is not correct", sessionValidator.validate(session1).get(0));
+        Assertions.assertTrue(sessionValidator.validate(session2).isEmpty());
+    }
+
+    @DisplayName("Test time validation")
+    @Test
+    void test_validate_invalidTimeFormat() {
+        //Session end time is before start time
+        Session session1 = new Session(LocalDate.now(),
+                LocalTime.now().plusHours(6),
+                LocalTime.now().plusHours(5));
+
+        //Session date is current date, but time is before current time
+        Session session2 = new Session(LocalDate.now(),
+                LocalTime.now().minusHours(1),
+                LocalTime.now().plusHours(1));
+
+        //Session time is correct
+        Session session3 = new Session(LocalDate.now(),
+                LocalTime.now().plusHours(1),
+                LocalTime.now().plusHours(2));
+
+        Assertions.assertEquals("Session time is not correct", sessionValidator.validate(session1).get(0));
+        Assertions.assertEquals("Session time is not correct", sessionValidator.validate(session2).get(0));
+        Assertions.assertTrue(sessionValidator.validate(session3).isEmpty());
+    }
 }

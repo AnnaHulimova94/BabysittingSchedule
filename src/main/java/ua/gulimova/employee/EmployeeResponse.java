@@ -8,8 +8,6 @@ import org.springframework.http.HttpStatus;
 import java.util.List;
 
 @Data
-@Setter
-@Getter
 class EmployeeResponse {
     private Employee employee;
     private HttpStatus httpStatus;
