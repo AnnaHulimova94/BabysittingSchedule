@@ -3,6 +3,8 @@ package ua.gulimova.employee;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import ua.gulimova.DataResponse;
+import ua.gulimova.Person.PersonValidator;
 
 import java.util.List;
 
@@ -10,22 +12,32 @@ import java.util.List;
 public class EmployeeService {
 
     private EmployeeRepository employeeRepository;
-    private EmployeeValidator employeeValidator;
+    private PersonValidator<Employee> personValidator;
 
-    public EmployeeService(EmployeeRepository employeeRepository, EmployeeValidator employeeValidator) {
+    public EmployeeService(EmployeeRepository employeeRepository, EmployeeValidator personValidator) {
         this.employeeRepository = employeeRepository;
-        this.employeeValidator = employeeValidator;
+        this.personValidator = personValidator;
     }
 
-    public EmployeeResponse add(Employee employee) {
-        List<String> fieldValidationMessages = employeeValidator.validate(employee);
+    public DataResponse<Employee> add(Employee employee) {
+        List<String> fieldValidationMessages = personValidator.validate(employee);
 
         return fieldValidationMessages.isEmpty() ?
-                new EmployeeResponse(employeeRepository.save(employee), HttpStatus.OK) :
-                new EmployeeResponse(employee, HttpStatus.BAD_REQUEST, fieldValidationMessages);
+                new DataResponse<>(employeeRepository.save(employee), HttpStatus.OK) :
+                new DataResponse<>(employee, HttpStatus.BAD_REQUEST, fieldValidationMessages);
     }
 
-    public Employee get(int id) {
-        return employeeRepository.findById(id).orElse(null);
+    public DataResponse<Employee> get(long id) {
+        Employee employee = employeeRepository.findById(id).orElse(null);
+
+        if (employee == null) {
+            return new DataResponse<>(null, HttpStatus.NOT_FOUND);
+        }
+
+        return new DataResponse<>(employee, HttpStatus.OK);
+    }
+
+    public List<Employee> getAll() {
+        return employeeRepository.findAll();
     }
 }

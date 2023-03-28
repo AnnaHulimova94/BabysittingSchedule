@@ -2,22 +2,20 @@ package ua.gulimova.employee;
 
 import com.sun.istack.NotNull;
 import lombok.Data;
-import lombok.Getter;
-import lombok.Setter;
-import ua.gulimova.session.Session;
+import lombok.EqualsAndHashCode;
+import ua.gulimova.Person.Person;
 
 import javax.persistence.*;
-import java.util.ArrayList;
-import java.util.List;
 
+@EqualsAndHashCode(callSuper = true)
 @Data
 @Entity
 @Table(name = "Employee")
-public class Employee {
+public class Employee extends Person {
     @Id
     @GeneratedValue
     @Column(name = "employee_id")
-    private int id;
+    private long id;
 
     @NotNull
     @Column(name = "employee_firstName")

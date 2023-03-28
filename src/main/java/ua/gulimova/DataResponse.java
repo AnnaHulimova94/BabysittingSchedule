@@ -1,26 +1,27 @@
-package ua.gulimova.Person;
+package ua.gulimova;
 
+import com.sun.xml.internal.ws.developer.Serialization;
 import lombok.Data;
 import org.springframework.http.HttpStatus;
-import ua.gulimova.employee.Employee;
 
 import java.util.List;
 
 @Data
-public class PersonResponse<T> {
-    private T person;
+@Serialization
+public class DataResponse<T> {
+    private T data;
     private HttpStatus httpStatus;
     private List<String> fieldValidationMessages;
 
-    public PersonResponse() {}
+    public DataResponse() {}
 
-    public PersonResponse(T person, HttpStatus httpStatus) {
-        this.person = person;
+    public DataResponse(T data, HttpStatus httpStatus) {
+        this.data = data;
         this.httpStatus = httpStatus;
     }
 
-    public PersonResponse(T person, HttpStatus httpStatus, List<String> fieldValidationMessages) {
-        this.person = person;
+    public DataResponse(T data, HttpStatus httpStatus, List<String> fieldValidationMessages) {
+        this.data = data;
         this.httpStatus = httpStatus;
         this.fieldValidationMessages = fieldValidationMessages;
     }

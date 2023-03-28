@@ -4,8 +4,11 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
+import ua.gulimova.DataResponse;
 
-@Controller
+import java.util.List;
+
+@RestController
 @RequestMapping("/employee")
 public class EmployeeController {
 
@@ -16,16 +19,19 @@ public class EmployeeController {
     }
 
     @PostMapping
-    public ResponseEntity<EmployeeResponse> add(@RequestBody Employee employee) {
-        EmployeeResponse employeeResponse = employeeService.add(employee);
+    public ResponseEntity<DataResponse<Employee>> add(@RequestBody Employee employee) {
+        DataResponse<Employee> employeeResponse = employeeService.add(employee);
         return new ResponseEntity<>(employeeResponse, employeeResponse.getHttpStatus());
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Employee> get(@PathVariable int id) {
-        Employee employee = employeeService.get(id);
-        HttpStatus httpStatus = employee != null ? HttpStatus.OK : HttpStatus.NOT_FOUND;
+    public ResponseEntity<DataResponse<Employee>> get(@PathVariable long id) {
+        DataResponse<Employee> employeeResponse = employeeService.get(id);
+        return new ResponseEntity<>(employeeResponse, employeeResponse.getHttpStatus());
+    }
 
-        return new ResponseEntity<>(employee, httpStatus);
+    @GetMapping("/all")
+    public ResponseEntity<List<Employee>> getAll() {
+        return new ResponseEntity<>(employeeService.getAll(), HttpStatus.OK);
     }
 }

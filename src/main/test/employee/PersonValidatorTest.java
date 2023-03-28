@@ -14,7 +14,7 @@ import java.util.List;
 
 import static org.mockito.Mockito.*;
 
-class EmployeeValidatorTest {
+class PersonValidatorTest {
 
     @InjectMocks
     private EmployeeValidator employeeValidator;
@@ -58,7 +58,7 @@ class EmployeeValidatorTest {
 
         doReturn(existingEmployee)
                 .when(employeeRepository)
-                .getByTelephoneNumber(anyString());
+                .getByPhoneNumber(anyString());
 
         List<String> result = employeeValidator.validate(employee);
 

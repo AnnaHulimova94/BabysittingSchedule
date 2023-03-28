@@ -1,4 +1,4 @@
-package ua.gulimova;
+package ua.gulimova.Person;
 
 import lombok.Data;
 

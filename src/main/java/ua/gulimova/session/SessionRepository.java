@@ -7,8 +7,11 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 @Repository
-public interface SessionRepository extends JpaRepository<Session, Integer> {
+public interface SessionRepository extends JpaRepository<Session, Long> {
 
     @Query(value = "select * from Session where employee_id = ?1", nativeQuery = true)
-    List<Session> getAllEmployeeSessions(int employeeId);
+    List<Session> getAllEmployeeSessions(long employeeId);
+
+    @Query(value = "select * from Session where employee_id = null", nativeQuery = true)
+    List<Session> getSessionsWithNoEmployee();
 }

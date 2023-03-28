@@ -3,6 +3,7 @@ package ua.gulimova.session;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import ua.gulimova.DataResponse;
 
 import java.util.List;
 
@@ -17,12 +18,25 @@ public class SessionController {
     }
 
     @PostMapping
-    public ResponseEntity<SessionResponse> add(@RequestBody SessionDTO sessionDTO) {
-        return new ResponseEntity<>(sessionService.add(sessionDTO), HttpStatus.OK);
+    public ResponseEntity<DataResponse<Session>> add(@RequestBody SessionDTO sessionDTO) {
+        DataResponse<Session> sessionResponse = sessionService.add(sessionDTO);
+        return new ResponseEntity<>(sessionResponse, sessionResponse.getHttpStatus());
     }
 
-    @GetMapping("/{employeeId}/getAllSessions")
-    public ResponseEntity<List<Session>> getAllEmployeeSessions(@PathVariable int employeeId) {
+    @GetMapping("/{employeeId}/get-all-sessions")
+    public ResponseEntity<List<Session>> getAllEmployeeSessions(@PathVariable long employeeId) {
         return new ResponseEntity<>(sessionService.getAllEmployeeSessions(employeeId), HttpStatus.OK);
+    }
+
+    @GetMapping("/sessions-with-no-employee")
+    public ResponseEntity<List<Session>> getSessionsWithNoEmployee() {
+        return new ResponseEntity<>(sessionService.getSessionsWithNoEmployee(), HttpStatus.OK);
+    }
+
+    @PostMapping("set-employee-to-session")
+    public ResponseEntity<DataResponse<Session>> setEmployeeToSession(@RequestParam long sessionId,
+                                                                      @RequestParam long employeeId) {
+        DataResponse<Session> session = sessionService.setEmployeeToSession(sessionId, employeeId);
+        return new ResponseEntity<>(session, session.getHttpStatus());
     }
 }

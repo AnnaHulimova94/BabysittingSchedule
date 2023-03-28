@@ -8,10 +8,10 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 
 @Data
-class SessionDTO {
+public class SessionDTO {
 
     @NotNull
-    @JsonFormat(pattern = "yyyy-mm-dd")
+    @JsonFormat(pattern = "yyyy-MM-dd")
     private LocalDate sessionDate;
 
     @NotNull
@@ -22,7 +22,14 @@ class SessionDTO {
     @JsonFormat(pattern = "hh:mm:ss")
     private LocalTime sessionEndTime;
 
-    private int employeeId;
+    private long hirerId;
+
+    public SessionDTO(Session session, long hirerId) {
+        this.sessionDate = session.getSessionDate();
+        this.sessionStartTime = session.getSessionStartTime();
+        this.sessionEndTime = session.getSessionEndTime();
+        this.hirerId = hirerId;
+    }
 
     Session convertToSession() {
         return new Session(sessionDate, sessionStartTime, sessionEndTime);
