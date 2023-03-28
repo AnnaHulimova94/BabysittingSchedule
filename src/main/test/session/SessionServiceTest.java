@@ -10,6 +10,7 @@ import org.mockito.MockitoAnnotations;
 import org.springframework.http.HttpStatus;
 import ua.gulimova.DataResponse;
 import ua.gulimova.employee.Employee;
+import ua.gulimova.employee.EmployeeService;
 import ua.gulimova.hirer.Hirer;
 import ua.gulimova.hirer.HirerService;
 import ua.gulimova.session.*;
@@ -18,6 +19,7 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import static org.mockito.Mockito.*;
 
@@ -34,6 +36,9 @@ class SessionServiceTest {
 
     @Mock
     private HirerService hirerService;
+
+    @Mock
+    private EmployeeService employeeService;
 
     @BeforeEach
     void setup() {
@@ -93,5 +98,60 @@ class SessionServiceTest {
 
         verify(hirerService).get(hirerId);
         verify(sessionValidator).validate(any(Session.class), eq(null));
+    }
+
+    @Test
+    void test_setEmployeeToSession() {
+        long employeeId = 101;
+        long sessionId = 102;
+        DataResponse<Employee> employee = new DataResponse<>(new Employee(), HttpStatus.OK);
+        Session session = new Session(LocalDate.now(), LocalTime.now(), LocalTime.now());
+
+        doReturn(employee)
+                .when(employeeService)
+                .get(employeeId);
+
+        doReturn(Optional.of(session))
+                .when(sessionRepository)
+                .findById(sessionId);
+
+        doReturn(session)
+                .when(sessionRepository)
+                .save(session);
+
+        DataResponse<Session> dataResponse = sessionService.setEmployeeToSession(sessionId, employeeId);
+
+        Assertions.assertEquals(employee.getData(), dataResponse.getData().getEmployee());
+        Assertions.assertEquals(HttpStatus.OK, dataResponse.getHttpStatus());
+        Assertions.assertNull(dataResponse.getFieldValidationMessages());
+
+        verify(employeeService).get(employeeId);
+        verify(sessionRepository).findById(sessionId);
+        verify(sessionRepository).save(session);
+    }
+
+    @Test
+    void test_removeEmployeeFromSession() {
+        Session session = new Session(LocalDate.now(), LocalTime.now(), LocalTime.now());
+        Employee employee = new Employee();
+
+        session.setEmployee(employee);
+
+        doReturn(Optional.of(session))
+                .when(sessionRepository)
+                .findById(anyLong());
+
+        doReturn(session)
+                .when(sessionRepository)
+                .save(session);
+
+        DataResponse<Session> dataResponse = sessionService.removeEmployeeFromSession(1);
+
+        Assertions.assertNull(dataResponse.getData().getEmployee());
+        Assertions.assertEquals(HttpStatus.OK, dataResponse.getHttpStatus());
+        Assertions.assertNull(dataResponse.getFieldValidationMessages());
+
+        verify(sessionRepository).findById(anyLong());
+        verify(sessionRepository).save(session);
     }
 }

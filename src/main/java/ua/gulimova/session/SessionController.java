@@ -39,4 +39,10 @@ public class SessionController {
         DataResponse<Session> session = sessionService.setEmployeeToSession(sessionId, employeeId);
         return new ResponseEntity<>(session, session.getHttpStatus());
     }
+
+    @PostMapping("remove-employee-from-session")
+    public ResponseEntity<DataResponse<Session>> removeEmployeeFromSession(@RequestParam long sessionId) {
+        DataResponse<Session> session = sessionService.removeEmployeeFromSession(sessionId);
+        return new ResponseEntity<>(session, session.getHttpStatus());
+    }
 }

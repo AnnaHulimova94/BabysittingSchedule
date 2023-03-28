@@ -56,9 +56,20 @@ public class SessionService {
         }
 
         session.setEmployee(employee);
-        sessionRepository.save(session);
 
-        return new DataResponse<>(session, HttpStatus.OK);
+        return new DataResponse<>(sessionRepository.save(session), HttpStatus.OK);
+    }
+
+    public DataResponse<Session> removeEmployeeFromSession(long sessionId) {
+        Session session = sessionRepository.findById(sessionId).orElse(null);
+
+        if (session == null) {
+            return new DataResponse<>(null, HttpStatus.NOT_FOUND);
+        }
+
+        session.setEmployee(null);
+
+        return new DataResponse<>(sessionRepository.save(session), HttpStatus.OK);
     }
 
     public List<Session> getAllEmployeeSessions(long employeeId) {
