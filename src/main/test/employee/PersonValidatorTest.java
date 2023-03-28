@@ -1,3 +1,5 @@
+package employee;
+
 import org.junit.jupiter.api.*;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
@@ -45,7 +47,7 @@ class EmployeeValidatorTest {
     }
 
     @DisplayName("Test phone duplication")
-    @ParameterizedTest
+    @ParameterizedTest(name = "When phone = {0} then valid = {1}")
     @CsvSource({
             "+380503456432, true",
             "+380504765256, false"
