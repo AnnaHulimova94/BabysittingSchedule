@@ -1,7 +1,7 @@
 package ua.gulimova.Person;
 
 import org.springframework.stereotype.Component;
-import ua.gulimova.ValidationMSG;
+import ua.gulimova.util.ValidationMSG;
 
 import java.util.LinkedList;
 import java.util.List;

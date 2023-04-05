@@ -2,7 +2,7 @@ package ua.gulimova.session;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
-import ua.gulimova.DataResponse;
+import ua.gulimova.util.DataResponse;
 import ua.gulimova.employee.Employee;
 import ua.gulimova.employee.EmployeeService;
 import ua.gulimova.hirer.Hirer;
@@ -34,15 +34,18 @@ public class SessionService {
     public DataResponse<Session> add(SessionDTO sessionDTO) {
         Session session = sessionDTO.convertToSession();
         DataResponse<Hirer> hirer = hirerService.get(sessionDTO.getHirerId());
-        List<String> fieldValidationMessages = sessionValidator.validate(session, hirer == null
-                ? null
-                : hirer.getData());
+
+        if (hirer == null) {
+            return new DataResponse<>(null, HttpStatus.NOT_FOUND);
+        }
+
+        List<String> fieldValidationMessages = sessionValidator.validate(session);
 
         if (!fieldValidationMessages.isEmpty()) {
             return new DataResponse<>(session, HttpStatus.BAD_REQUEST, fieldValidationMessages);
         }
 
-        session.setHirer(hirer == null ? null : hirer.getData());
+        session.setHirer(hirer.getData());
 
         return new DataResponse<>(sessionRepository.save(session), HttpStatus.OK);
     }

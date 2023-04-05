@@ -28,8 +28,8 @@ class SessionValidatorTest {
                 LocalTime.now().plusHours(2),
                 LocalTime.now().plusHours(3));
 
-        Assertions.assertEquals("Session date is not correct", sessionValidator.validate(session1, hirer).get(0));
-        Assertions.assertTrue(sessionValidator.validate(session2, hirer).isEmpty());
+        Assertions.assertEquals("Session date is not correct", sessionValidator.validate(session1).get(0));
+        Assertions.assertTrue(sessionValidator.validate(session2).isEmpty());
     }
 
     @DisplayName("Test time validation")
@@ -50,20 +50,8 @@ class SessionValidatorTest {
                 LocalTime.now().plusHours(1),
                 LocalTime.now().plusHours(2));
 
-        Assertions.assertEquals("Session time is not correct", sessionValidator.validate(session1, hirer).get(0));
-        Assertions.assertEquals("Session time is not correct", sessionValidator.validate(session2, hirer).get(0));
-        Assertions.assertTrue(sessionValidator.validate(session3, hirer).isEmpty());
-    }
-
-    @DisplayName("Test validation, when employee is not found")
-    @Test
-    void test_validate_employeeNotFound() {
-        //Session time is correct
-        Session session = new Session(LocalDate.now(),
-                LocalTime.now().plusHours(1),
-                LocalTime.now().plusHours(2));
-
-        Assertions.assertEquals("Employee with such id is not found", sessionValidator.validate(session, null).get(0));
-        Assertions.assertTrue(sessionValidator.validate(session, hirer).isEmpty());
+        Assertions.assertEquals("Session time is not correct", sessionValidator.validate(session1).get(0));
+        Assertions.assertEquals("Session time is not correct", sessionValidator.validate(session2).get(0));
+        Assertions.assertTrue(sessionValidator.validate(session3).isEmpty());
     }
 }

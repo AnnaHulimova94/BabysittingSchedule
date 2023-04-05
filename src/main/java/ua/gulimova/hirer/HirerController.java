@@ -3,7 +3,7 @@ package ua.gulimova.hirer;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import ua.gulimova.DataResponse;
+import ua.gulimova.util.DataResponse;
 
 import java.util.List;
 

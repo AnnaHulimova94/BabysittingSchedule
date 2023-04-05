@@ -1,10 +1,7 @@
 package ua.gulimova.session;
 
 import org.springframework.stereotype.Component;
-import ua.gulimova.ValidationMSG;
-import ua.gulimova.employee.Employee;
-import ua.gulimova.employee.EmployeeService;
-import ua.gulimova.hirer.Hirer;
+import ua.gulimova.util.ValidationMSG;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
@@ -14,12 +11,8 @@ import java.util.List;
 @Component
 public class SessionValidator {
 
-    public List<String> validate(Session session, Hirer hirer) {
+    public List<String> validate(Session session) {
         List<String> fieldValidationMessages = new LinkedList<>();
-
-        if (hirer == null) {
-            fieldValidationMessages.add(ValidationMSG.MSG_EMPLOYEE_NOT_FOUND_MESSAGE);
-        }
 
         if (!isTimeValid(session.getSessionDate(),
                 session.getSessionStartTime(),

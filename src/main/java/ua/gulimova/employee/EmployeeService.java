@@ -3,7 +3,7 @@ package ua.gulimova.employee;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
-import ua.gulimova.DataResponse;
+import ua.gulimova.util.DataResponse;
 import ua.gulimova.Person.PersonValidator;
 
 import java.util.List;
