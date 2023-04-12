@@ -2,10 +2,7 @@ package ua.gulimova.session;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.sun.istack.NotNull;
-import lombok.Data;
-import lombok.Getter;
-import lombok.NonNull;
-import lombok.Setter;
+import lombok.*;
 import ua.gulimova.employee.Employee;
 import ua.gulimova.hirer.Hirer;
 
@@ -16,6 +13,7 @@ import java.time.LocalTime;
 @Data
 @Entity
 @Table(name = "Session")
+@NoArgsConstructor
 public class Session {
 
     @Id

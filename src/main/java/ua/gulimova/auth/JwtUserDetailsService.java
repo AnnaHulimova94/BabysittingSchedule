@@ -8,8 +8,6 @@ import org.springframework.stereotype.Service;
 import ua.gulimova.auth.user.CustomUser;
 import ua.gulimova.auth.user.CustomUserRepository;
 
-import java.util.ArrayList;
-
 @Service
 public class JwtUserDetailsService implements UserDetailsService {
 
@@ -24,8 +22,7 @@ public class JwtUserDetailsService implements UserDetailsService {
         CustomUser customUser = customUserRepository.getByUsername(username);
 
         if (customUser != null) {
-            return new User(customUser.getUsername(), customUser.getPassword(),
-                    new ArrayList<>());
+            return new User(customUser.getUsername(), customUser.getPassword(), customUser.getAuthorityList());
         } else {
             throw new UsernameNotFoundException("User not found with username: " + username);
         }
